@@ -1,9 +1,9 @@
-export async function navQuery(){
-    const siteNavQueryRes = await fetch(import.meta.env.WORDPRESS_API_URL, {
-        method: 'post', 
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-            query: `{
+export async function navQuery() {
+  const siteNavQueryRes = await fetch(import.meta.env.WORDPRESS_API_URL, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `{
                 menus(where: {location: PRIMARY}) {
                   nodes {
                     name
@@ -23,19 +23,19 @@ export async function navQuery(){
                     description
                 }
             }
-            `
-        })
-    });
-    const{ data } = await siteNavQueryRes.json();
-    return data;
+            `,
+    }),
+  });
+  const { data } = await siteNavQueryRes.json();
+  return data;
 }
 
-export async function homePagePostsQuery(){
-    const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
-        method: 'post', 
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-            query: `{
+export async function homePagePostsQuery() {
+  const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `{
                 posts {
                   nodes {
                     date
@@ -63,20 +63,19 @@ export async function homePagePostsQuery(){
                   }
                 }
               }
-            `
-        })
-    });
-    const{ data } = await response.json();
-    return data;
+            `,
+    }),
+  });
+  const { data } = await response.json();
+  return data;
 }
 
-
-export async function getNodeByURI(uri){
-    const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
-        method: 'post', 
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-            query: `query GetNodeByURI($uri: String!) {
+export async function getNodeByURI(uri) {
+  const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `query GetNodeByURI($uri: String!) {
                 nodeByUri(uri: $uri) {
                   __typename
                   isContentNode
@@ -145,21 +144,40 @@ export async function getNodeByURI(uri){
                 }
               }
             `,
-            variables: {
-                uri: uri
-            }
-        })
-    });
-    const{ data } = await response.json();
-    return data;
+      variables: {
+        uri: uri,
+      },
+    }),
+  });
+  const { data } = await response.json();
+  return data;
 }
 
-export async function getAllUris(){
+export async function getSiteLogo() {
   const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
-      method: 'post', 
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-          query: `query GetAllUris {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `
+        query Logo {
+          generalSettings {
+            customLogoUrl
+          }
+        }
+      `,
+    }),
+  });
+
+  const data = await response.json();
+  return data;
+}
+
+export async function getAllUris() {
+  const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `query GetAllUris {
             terms {
               nodes {
                 uri
@@ -176,24 +194,24 @@ export async function getAllUris(){
               }
             }
           }
-          `
-      })
+          `,
+    }),
   });
-  const{ data } = await response.json();
+  const { data } = await response.json();
   const uris = Object.values(data)
-    .reduce(function(acc, currentValue){
-      return acc.concat(currentValue.nodes)
+    .reduce(function (acc, currentValue) {
+      return acc.concat(currentValue.nodes);
     }, [])
-    .filter(node => node.uri !== null)
-    .map(node => {
+    .filter((node) => node.uri !== null)
+    .map((node) => {
       let trimmedURI = node.uri.substring(1);
-      trimmedURI = trimmedURI.substring(0, trimmedURI.length - 1)
-      return {params: {
-        uri: trimmedURI
-      }}
-    })
+      trimmedURI = trimmedURI.substring(0, trimmedURI.length - 1);
+      return {
+        params: {
+          uri: trimmedURI,
+        },
+      };
+    });
 
   return uris;
-
 }
-

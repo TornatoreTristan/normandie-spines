@@ -1,41 +1,50 @@
 ---
-import SiteNav from "../components/SiteNav.astro"; 
+import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { navQuery } from "../lib/api";
 const { menus, generalSettings } = await navQuery();
 const primaryMenu = menus.nodes[0];
 
 const { title, description } = Astro.props;
-
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{`${title} | ${generalSettings.title}`}</title>
-		<meta name="description" content={description}>
-	</head>
-	<body>
-		<main>
-			<SiteNav menu={primaryMenu} generalSettings={generalSettings}></SiteNav>
-			<hr>
-			<slot></slot>
-		</main>
-		<SiteFooter></SiteFooter>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="https://normandie.spines.fr/wp-content/uploads/2024/01/NormandyQuestLogo-04.svg"
+    />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{`${title} | ${generalSettings.title}`}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <main>
+      <SiteNav menu={primaryMenu} generalSettings={generalSettings} />
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
 </html>
 
-<style>
-	body {
-		font-family: 'Open Sans', sans-serif;
-		font-size: 18px;
-	}
-	main {
-		width:100%;
-		max-width: 1024px;
-		margin:auto;
-	}
+<style is:global>
+  @import url("https://use.typekit.net/lhb8tjv.css");
+
+  body {
+    font-family: "filson-pro", sans-serif;
+    font-weight: 400;
+  }
+  main {
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
+  }
+  p {
+    font-size: 1.1rem;
+    font-weight: 100;
+    line-height: 1.7;
+  }
 </style>

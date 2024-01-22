@@ -7,20 +7,90 @@ import { homePagePostsQuery } from "../lib/api";
 const data = await homePagePostsQuery();
 const posts = data.posts.nodes;
 
-Astro.response.headers.set('Cache-Control','max-age=600, must-revalidate');
-
+Astro.response.headers.set("Cache-Control", "max-age=600, must-revalidate");
 ---
 
-<MainLayout title='Home Page'>
-	<main>
-		<Hero></Hero>
-		<h2>Recent Posts</h2>
-		{
-			posts.map(post => {
-				return (
-					<PostCard post={post}></PostCard>
-				)
-			})
-		}
-	</main>
+<MainLayout title="Home Page">
+  <main>
+    <Hero />
+    <section class="hero-title">
+      <p>
+        Vous transmettre tous les secrets pour rendre votre visite de la
+        Normandie inoubliable
+      </p>
+      <div class="separator"></div>
+      <h2>
+        Passionné <span
+          >d'histoire <img
+            src="https://normandie.spines.fr/wp-content/uploads/2024/01/chateau-caen-normandie.jpeg"
+            alt="chateau de normandie - Caen"
+            width="80"
+          />,
+        </span> de paysages, de plages ou <span
+          >d'architecture <img
+            src="https://normandie.spines.fr/wp-content/uploads/2024/01/architecture-normande.jpeg"
+            alt="maison normandes collombages"
+            width="80"
+          />,</span
+        > soyez certain de trouver le bonheur dans le pays fort et vert !
+      </h2>
+    </section>
+    <section class="latest_article">
+      <h2>Nos derniers articles</h2>
+      {
+        posts.map((post) => {
+          return <PostCard post={post} />;
+        })
+      }
+    </section>
+  </main>
 </MainLayout>
+
+<style>
+  .hero-title {
+    margin: 4rem 0;
+  }
+  .hero-title p {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.7rem;
+    font-weight: 200;
+    margin-bottom: 1rem;
+    color: #767676;
+  }
+  h2 {
+    text-align: center;
+    font-weight: 200;
+    vertical-align: middle;
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .separator {
+    width: 20%;
+    margin: 2rem auto;
+    height: 1px;
+    background-color: #767676;
+  }
+  h2 span {
+    display: inline-block;
+    vertical-align: middle;
+    z-index: 200;
+    margin: 0 0.5rem;
+  }
+  h2 span img {
+    vertical-align: middle;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50px;
+  }
+  .latest_article {
+    padding: 4rem 0;
+    background-color: #fffff7;
+  }
+</style>
