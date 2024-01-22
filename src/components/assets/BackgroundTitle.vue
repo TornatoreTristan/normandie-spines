@@ -1,76 +1,41 @@
 <template>
-  <div>
-    <span
-      v-for="(line, index) in lines"
-      :key="index"
-      class="dynamic-background"
-    >
-      {{ line }}
-    </span>
+  <div class="title-container">
+    <h3>{{ title }}</h3>
+    <p class="date">{{ dateFr }}</p>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    text: String,
-    maxWidth: {
-      type: Number,
-      default: 1000, // Remplacez par la largeur maximale de votre conteneur
-    },
+<script setup>
+import { defineProps } from "vue";
+const props = defineProps({
+  title: {
+    type: String,
+    required: true,
   },
-  data() {
-    return {
-      lines: [],
-    };
+  date: {
+    type: String,
+    required: true,
   },
-  methods: {
-    calculateLines() {
-      const words = this.text.split(" ");
-      let currentLine = "";
-
-      words.forEach((word) => {
-        const testLine = currentLine + word + " ";
-        const lineWidth = this.getTextWidth(testLine);
-
-        if (lineWidth > this.maxWidth && currentLine.length > 0) {
-          this.lines.push(currentLine.trim());
-          currentLine = word + " ";
-        } else {
-          currentLine = testLine;
-        }
-      });
-
-      if (currentLine) {
-        this.lines.push(currentLine.trim());
-      }
-    },
-    getTextWidth(text) {
-      // Cette fonction est une approximation; ajustez-la en fonction de votre style de police exact.
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-      context.font = "16px Arial"; // Remplacez par la police et la taille que vous utilisez
-      return context.measureText(text).width;
-    },
-  },
-  watch: {
-    text: {
-      immediate: true,
-      handler() {
-        this.calculateLines();
-      },
-    },
-  },
-};
+});
+// Create function to display date in a french format
+const date = new Date(props.date);
+const options = { year: "numeric", month: "long", day: "numeric" };
+const dateFr = date.toLocaleDateString("fr-FR", options);
 </script>
 
 <style>
-.dynamic-background {
+.title-container {
   display: block;
-  background: white;
-  padding: 0.5em 1em;
-  margin-bottom: 0.5em;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+}
+h3 {
+  margin: 1rem 0;
+}
+.date {
+  font-size: 0.8rem;
+  color: #a0aec0;
+  margin: 0;
 }
 </style>

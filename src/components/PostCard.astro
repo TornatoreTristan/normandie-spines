@@ -1,44 +1,45 @@
 ---
 import BackgroundTitle from "../components/assets/BackgroundTitle.vue";
 const { post } = Astro.props;
-console.log(post.featuredImage.node.sourceUrl);
 ---
 
 <article
   style={{ backgroundImage: `url(${post.featuredImage?.node?.sourceUrl})` }}
 >
   <a class="post-link" href={post.uri} aria-label={post.title}>
-    <h3 class="title-background">{post.title}</h3>
-    <BackgroundTitle text={post.title} />
-    <section>
-      <span
-        ><time datetime={post.date}
-          >{new Date(post.date).toLocaleDateString("fr-FR")}</time
-        ></span
-      >
-      <div>
-        <p set:html={post.excerpt} />
+    <div class="categories">
+      <ul>
         {
           post.categories.nodes.map((category) => {
             return (
               <a class="term-link" href={category.uri}>
-                {category.name}
+                <li>{category.name}</li>
               </a>
             );
           })
         }
-      </div>
-    </section>
+      </ul>
+    </div>
+    <a href={post.uri}>
+      <BackgroundTitle title={post.title} date={post.date} />
+    </a>
   </a>
 </article>
 
 <style>
   article {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     border: 1px solid lightgray;
     border-radius: 10px;
     background-color: #fff;
     margin: 1.5rem 5%;
-    padding: 0.5rem 2rem 1rem 2rem;
+    padding: 1.5rem 2rem 1.5rem 2rem;
   }
   img {
     width: 100%;
@@ -50,23 +51,9 @@ console.log(post.featuredImage.node.sourceUrl);
     display: flex;
     flex-direction: column;
   }
-  h3 {
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    background-color: #fff;
-    border-radius: 10px;
-    font-weight: bold;
-  }
-  .title-background {
-    display: inline;
-    padding: 0.5em 1em;
-    border-radius: 25px;
-    background-color: rgba(255, 255, 255);
-    font-weight: bold;
-    margin: 0;
-    white-space: wrap;
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+  a {
+    text-decoration: none;
+    color: #000;
   }
   a.post-link {
     text-decoration: none;
@@ -74,12 +61,24 @@ console.log(post.featuredImage.node.sourceUrl);
   }
   a.term-link {
     display: inline-block;
-    height: 1.5rem;
-    padding: 0.75rem;
-    margin: 0.5rem 0.5rem 0.5rem 0;
-    border: 2px solid darkgrey;
-    border-radius: 10px;
-    font-weight: bold;
+    padding: 0.3rem 1rem;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 0.7rem;
+    background-color: #0000004b;
+    backdrop-filter: blur(5px);
+    text-decoration: none;
+  }
+  .categories ul {
+    margin-left: 0;
+    padding-left: 0;
+  }
+  .categories li {
+    list-style: none;
+  }
+  .categories a {
+    margin-right: 5px;
   }
   span {
     color: darkgrey;

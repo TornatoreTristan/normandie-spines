@@ -3,6 +3,7 @@ import Hero from "../components/Hero.astro";
 import PostCard from "../components/PostCard.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import { homePagePostsQuery } from "../lib/api";
+import LineCategorieTitle from "../components/assets/LineCategorieTitle.vue";
 
 const data = await homePagePostsQuery();
 const posts = data.posts.nodes;
@@ -42,6 +43,15 @@ Astro.response.headers.set("Cache-Control", "max-age=600, must-revalidate");
           return <PostCard post={post} />;
         })
       }
+    </section>
+    <section>
+      <h2>Laissez-vous guider autour des grandes thématiques Normandes</h2>
+      <LineCategorieTitle title="Seconde Guerre Mondiale" />
+      <LineCategorieTitle title="Activités à faire en Normandie" />
+      <LineCategorieTitle title="Découverte insolite en Normandie" />
+      <LineCategorieTitle title="L'Histoire de la Normandie" />
+      <LineCategorieTitle title="Venir vivre en Normandie" />
+      <LineCategorieTitle title="Randonnées Normandes" />
     </section>
   </main>
 </MainLayout>
