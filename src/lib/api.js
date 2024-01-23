@@ -9,10 +9,22 @@ export async function navQuery() {
                     name
                     menuItems {
                         nodes {
+                            id
+                            databaseId
                             uri
                             url
                             order
                             label
+                            parentDatabaseId
+                            childItems {
+                                nodes {
+                                    id
+                                    uri
+                                    url
+                                    order
+                                    label
+                                }
+                            }
                         }
                     }
                   }
@@ -111,6 +123,9 @@ export async function getNodeByURI(uri) {
                     uri
                     date
                     content
+                    template {
+                      templateName
+                    }
                   }
                   ... on Category {
                     id

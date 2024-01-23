@@ -1,9 +1,12 @@
 ---
+import Subitem from "../components/Nav/Subitem.vue";
 const { menu } = Astro.props;
 import { getSiteLogo } from "../lib/api";
+const firstLevelMenu = menu.menuItems.nodes.filter(
+  (item) => !item.parentDatabaseId
+);
 
 const logo = await getSiteLogo();
-console.log(logo.data.generalSettings.customLogoUrl);
 ---
 
 <header>
@@ -20,10 +23,15 @@ console.log(logo.data.generalSettings.customLogoUrl);
   <nav>
     <ul>
       {
-        menu.menuItems.nodes.map((menuItem) => {
+        firstLevelMenu.map((menuItem) => {
           return (
-            <li>
+            <li class="nav-item">
               <a href={menuItem.uri || "/"}>{menuItem.label}</a>
+              {menuItem.childItems.nodes.length >= 1 ? (
+                <div class="submenu">
+                  <Subitem subitems={menuItem.childItems.nodes} client:load />
+                </div>
+              ) : null}
             </li>
           );
         })
@@ -47,12 +55,16 @@ console.log(logo.data.generalSettings.customLogoUrl);
 <style>
   header {
     height: 60px;
-    padding: 20px 0;
-    display: flex;
-    justify-content: space-between;
+    padding: 20px 1%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
   }
   /* hamburger icon styling */
+  .site-name {
+    width: auto;
+    display: inline;
+  }
   .hamburger {
     display: none;
     font-size: 2rem;
@@ -62,9 +74,7 @@ console.log(logo.data.generalSettings.customLogoUrl);
   }
   /* nav menu styling */
   nav {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-self: center;
   }
   nav ul {
     display: flex;
@@ -77,14 +87,49 @@ console.log(logo.data.generalSettings.customLogoUrl);
   }
   nav a {
     text-decoration: none;
+    color: #282828;
+    padding-bottom: 5px;
+    transition: all 0.3s;
+    border-bottom: 1px solid #fff;
+  }
+  nav a:hover {
+    color: #000;
+    border-bottom: 1px solid #000;
+  }
+  .nav-item {
+    position: relative;
+  }
+  .submenu {
+    display: none;
+    position: absolute;
+    padding: 20px 30px;
+    top: 40px;
+    left: 50%;
+    opacity: 0;
+    visibility: hidden;
+    min-width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    background-color: #fff;
+    transform: translateX(-50%);
+    transition: all 0.3s ease-in-out;
+  }
+  .nav-item:hover .submenu {
+    /* display: block; */
+    opacity: 1;
+    visibility: visible;
+  }
+  @media screen and (min-width: 767px) {
+    header {
+      padding: 20px 14%;
+    }
   }
   /* media query for mobile */
   @media (max-width: 767px) {
-    /* hamburger icon shows up */
     .hamburger {
       display: block;
     }
-    /* nav is hidden by default */
     nav {
       display: none;
       flex-direction: column;
@@ -96,18 +141,48 @@ console.log(logo.data.generalSettings.customLogoUrl);
       bottom: 0;
       background-color: #fff;
     }
-    /* nav links are stacked and centered */
     nav ul {
       flex-direction: column;
       align-items: center;
     }
-    /* nav link styling */
     nav li {
       margin: 10px 0;
     }
-    /* nav links show up when hamburger icon is clicked */
     nav.show-nav {
       display: flex;
     }
   }
 </style>
+
+<script>
+  let currentOpenSubmenu = null; // Variable pour garder une trace du sous-menu ouvert
+
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    let timer;
+
+    item.addEventListener("mouseenter", () => {
+      clearTimeout(timer); // Annuler le masquage précédent si l'utilisateur revient sur l'élément
+      let submenu = item.querySelector(".submenu") as HTMLElement; // Assurez-vous que 'submenu' est déclaré une seule fois
+
+      if (submenu) {
+        if (currentOpenSubmenu && currentOpenSubmenu !== submenu) {
+          currentOpenSubmenu.style.display = "none"; // Fermer le sous-menu précédent
+        }
+        currentOpenSubmenu = submenu; // Mettre à jour le sous-menu actuellement ouvert
+        submenu.style.display = "block"; // Afficher le sous-menu actuel
+      }
+    });
+
+    item.addEventListener("mouseleave", () => {
+      let submenu = item.querySelector(".submenu") as HTMLElement; // Pas besoin de redéclarer 'submenu' ici car elle est déjà déclarée ci-dessus
+      if (submenu) {
+        timer = setTimeout(() => {
+          submenu.style.display = "none"; // Masquer le sous-menu après 3 secondes
+          if (submenu === currentOpenSubmenu) {
+            currentOpenSubmenu = null; // Réinitialiser la variable si c'est le sous-menu actuellement ouvert
+          }
+        }, 3000); // 3000 millisecondes = 3 secondes
+      }
+    });
+  });
+</script>

@@ -13,13 +13,19 @@ export async function getStaticPaths() {
 }
 
 function resolveContentTemplate(node) {
+  console.log(node);
   let template;
   switch (node.__typename) {
     case "Post":
       template = Single;
       break;
     case "Page":
-      template = Single;
+      if (node.template.templateName === "Default") {
+        template = Single;
+      }
+      if (node.template.templateName === "Repertory") {
+        template = Archive;
+      }
       break;
     case "Category":
       template = Archive;

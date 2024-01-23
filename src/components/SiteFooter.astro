@@ -2,11 +2,79 @@
 ---
 
 <footer>
-  <p>2024 - Site réalisé par Tristan TORNATORE</p>
+  <section class="footer-cols">
+    <div class="meta-info">
+      <img
+        src="https://normandie.spines.fr/wp-content/uploads/2024/01/NormandyQuestLogo_Plan-de-travail-1.svg"
+        width="150"
+        alt=""
+      />
+      <h4>NormandyQuest</h4>
+      <p>
+        Nous sommes un média spécialisé sur la Normandie. Nous régigeons sur
+        l'histoire et les lieux à visiter.
+      </p>
+    </div>
+    <div class="meta-footer">
+      <div>
+        <h4>Nos articles</h4>
+        <ul>
+          <li><a href="/">Visiter Caen</a></li>
+          <li><a href="/">Visiter Deauville</a></li>
+          <li><a href="/">Visiter Cabourg</a></li>
+          <li><a href="/">L'histoire de la Normandie</a></li>
+          <li><a href="/">Seconde Guerre Mondiale</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>À propos</h4>
+        <ul>
+          <li><a href="/">Espace presse</a></li>
+          <li><a href="/">Nous contacter</a></li>
+          <li><a href="/">Mentions légales</a></li>
+          <li><a href="/">Politique de confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <p>2024 - Site réalisé par passion ❤️ par Tristan TORNATORE</p>
 </footer>
 
 <style>
+  footer {
+    background-color: #ffffe9;
+    padding: 20px 0;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  li {
+    margin-bottom: 10px;
+  }
+  footer a {
+    text-decoration: none;
+    color: #000;
+  }
   footer p {
     text-align: center;
+    font-size: 0.8rem;
+  }
+  @media screen and (min-width: 768px) {
+    .footer-cols {
+      display: flex;
+      justify-content: space-between;
+    }
+    .meta-info {
+      width: 20%;
+    }
+    .meta-info p {
+      text-align: left;
+      font-size: 0.8rem;
+    }
+    .meta-footer {
+      display: flex;
+      gap: 80px;
+    }
   }
 </style>

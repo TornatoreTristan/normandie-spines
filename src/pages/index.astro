@@ -7,6 +7,7 @@ import LineCategorieTitle from "../components/assets/LineCategorieTitle.vue";
 
 const data = await homePagePostsQuery();
 const posts = data.posts.nodes;
+const recentsPost = posts.slice(0, 3);
 
 Astro.response.headers.set("Cache-Control", "max-age=600, must-revalidate");
 ---
@@ -36,13 +37,24 @@ Astro.response.headers.set("Cache-Control", "max-age=600, must-revalidate");
         > soyez certain de trouver le bonheur dans le pays fort et vert !
       </h2>
     </section>
-    <section class="latest_article">
+    <section class="latest_article_section">
       <h2>Nos derniers articles</h2>
-      {
-        posts.map((post) => {
-          return <PostCard post={post} />;
-        })
-      }
+      <div class="articles-items">
+        {
+          recentsPost.map((post) => {
+            return <PostCard post={post} class="article" />;
+          })
+        }
+      </div>
+      <div class="cta-container">
+        <a href="/" class="cta-primary"
+          >Voir tous nos articles <img
+            src="/right-arrow.svg"
+            width="20"
+            alt=""
+          /></a
+        >
+      </div>
     </section>
     <section>
       <h2>Laissez-vous guider autour des grandes thématiques Normandes</h2>
@@ -53,12 +65,29 @@ Astro.response.headers.set("Cache-Control", "max-age=600, must-revalidate");
       <LineCategorieTitle title="Venir vivre en Normandie" />
       <LineCategorieTitle title="Randonnées Normandes" />
     </section>
+    <section class="normandy-cities">
+      <h2>Nos articles selon la ville Normande que vous souhaitez visiter</h2>
+      <p>
+        En Normandie, chaque département, chaque ville à son caractère !
+        Retrouvez tous vos articles préférés triées par ville du pays de la
+        pomme.
+      </p>
+      <div class="cities">
+        <div class="city-item">Caen</div>
+        <div class="city-item">Cabourg</div>
+        <div class="city-item">Deauville</div>
+        <div class="city-item">Bayeux</div>
+        <div class="city-item">Rouen</div>
+        <div class="city-item">Coutances</div>
+        <div class="city-item">Avranches</div>
+      </div>
+    </section>
   </main>
 </MainLayout>
 
-<style>
+<style scoped>
   .hero-title {
-    margin: 4rem 0;
+    box-sizing: border-box;
   }
   .hero-title p {
     text-align: center;
@@ -99,8 +128,58 @@ Astro.response.headers.set("Cache-Control", "max-age=600, must-revalidate");
     object-fit: cover;
     border-radius: 50px;
   }
-  .latest_article {
-    padding: 4rem 0;
-    background-color: #fffff7;
+  .latest_article_section {
+    background-color: #ffffe9;
+  }
+  .normandy-cities p {
+    font-size: 1.4rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .cities {
+    display: flex;
+    gap: 1rem;
+    padding: 2rem 0;
+    justify-content: center;
+  }
+  .city-item {
+    padding: 0.5rem 1rem;
+    border: 2px solid #000;
+    border-radius: 10px;
+  }
+  @media screen and (min-width: 768px) {
+    h2 {
+      font-size: 4.7rem;
+      line-height: 6rem;
+    }
+    h2 span img {
+      vertical-align: middle;
+      display: inline-block;
+      width: 130px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 50px;
+    }
+    .hero-title {
+      background-color: #fffff7;
+      border-radius: 30px 0;
+      box-sizing: border-box;
+      border-radius: 70px;
+      margin-top: -4rem;
+    }
+    .hero-title p {
+      text-align: center;
+      font-size: 1.4rem;
+      line-height: 2.4rem;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 200;
+      color: #767676;
+    }
+    .articles-items {
+      display: flex;
+      gap: 20px;
+    }
   }
 </style>

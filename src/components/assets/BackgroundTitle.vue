@@ -1,6 +1,6 @@
 <template>
   <div class="title-container">
-    <h3>{{ title }}</h3>
+    <h3>{{ title }} <img src="/right-arrow.svg" width="17" alt="" /></h3>
     <p class="date">{{ dateFr }}</p>
   </div>
 </template>
@@ -32,10 +32,24 @@ const dateFr = date.toLocaleDateString("fr-FR", options);
 }
 h3 {
   margin: 1rem 0;
+  font-weight: 100;
+  position: relative;
+}
+h3 img {
+  transform: rotate(-45deg);
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  vertical-align: middle;
 }
 .date {
   font-size: 0.8rem;
   color: #a0aec0;
   margin: 0;
+}
+@media screen and (min-width: 768px) {
+  h3 {
+    font-size: 1.2rem;
+  }
 }
 </style>

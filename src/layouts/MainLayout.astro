@@ -32,19 +32,44 @@ const { title, description } = Astro.props;
 
 <style is:global>
   @import url("https://use.typekit.net/lhb8tjv.css");
-
   body {
     font-family: "filson-pro", sans-serif;
     font-weight: 400;
   }
   main {
-    width: 100%;
-    max-width: 1024px;
+    box-sizing: border-box;
     margin: auto;
+  }
+  section {
+    padding: 4rem 1%;
   }
   p {
     font-size: 1.1rem;
     font-weight: 100;
     line-height: 1.7;
+  }
+  .cta-primary {
+    color: #000;
+    border: 2px solid #000;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: inline-block;
+  }
+  .cta-primary img {
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .cta-container {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 0 1rem 0;
+  }
+  @media screen and (min-width: 768px) {
+    section {
+      padding: 4rem 14%;
+    }
   }
 </style>
