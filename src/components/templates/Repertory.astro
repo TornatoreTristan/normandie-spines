@@ -1,0 +1,34 @@
+---
+const { node } = Astro.props;
+import { homePagePostsQuery } from "../../lib/api";
+import PostCard from "../../components/PostCard.astro";
+const data = await homePagePostsQuery();
+const posts = data.posts.nodes;
+const subject = node.pageOption.tags_posts;
+const selectedPost = posts.filter((post) =>
+  post.tags.nodes.some((tag) => tag.name === subject)
+);
+---
+
+<section class="repertory-header">
+  <div class="meta-header">
+    <p>NormadyQuest</p>
+    <h1>{node.title}</h1>
+  </div>
+</section>
+<section>
+  {
+    selectedPost.map((post) => {
+      return <PostCard post={post} class="article" />;
+    })
+  }
+</section>
+
+<style>
+  .meta-header {
+    max-width: 800px;
+  }
+  h1 {
+    font-size: 3rem;
+  }
+</style>

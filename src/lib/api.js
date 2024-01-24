@@ -55,6 +55,11 @@ export async function homePagePostsQuery() {
                     title
                     commentCount
                     excerpt
+                    tags {
+                      nodes {
+                        name
+                      }
+                    }
                     categories {
                       nodes {
                         name
@@ -99,6 +104,11 @@ export async function getNodeByURI(uri) {
                     uri
                     excerpt
                     content
+                    tags {
+                      nodes {
+                        name
+                      }
+                    }
                     categories {
                       nodes {
                         name
@@ -123,6 +133,9 @@ export async function getNodeByURI(uri) {
                     uri
                     date
                     content
+                    pageOption {
+                      tags_posts
+                    }
                     template {
                       templateName
                     }
@@ -136,6 +149,11 @@ export async function getNodeByURI(uri) {
                         title
                         excerpt
                         uri
+                        tags {
+                          nodes {
+                            name
+                          }
+                        }
                         categories {
                           nodes {
                             name

@@ -3,6 +3,7 @@ export const prerender = true;
 import MainLayout from "../layouts/MainLayout.astro";
 import Archive from "../components/templates/Archive.astro";
 import Single from "../components/templates/Single.astro";
+import Repertory from "../components/templates/Repertory.astro";
 import { getNodeByURI, getAllUris } from "../lib/api";
 const uri = `/${Astro.params.uri}/`;
 const data = await getNodeByURI(uri);
@@ -13,18 +14,17 @@ export async function getStaticPaths() {
 }
 
 function resolveContentTemplate(node) {
-  console.log(node);
   let template;
   switch (node.__typename) {
     case "Post":
       template = Single;
       break;
     case "Page":
-      if (node.template.templateName === "Default") {
-        template = Single;
-      }
       if (node.template.templateName === "Repertory") {
-        template = Archive;
+        console.log("test");
+        template = Repertory;
+      } else {
+        template = Single;
       }
       break;
     case "Category":
