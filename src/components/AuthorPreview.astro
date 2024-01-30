@@ -1,0 +1,32 @@
+---
+const props = Astro.props;
+---
+
+<article class="author-preview">
+  <div>
+    <img src={props.author.avatar.url} width="80" alt="" />
+  </div>
+  <div>
+    <h4>{props.author.name}</h4>
+    <p>{props.author.description}</p>
+  </div>
+</article>
+
+<style>
+  .author-preview {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 2rem;
+    background-color: #fffff6;
+    border-radius: 0.75rem;
+    margin: 4rem 0 1rem;
+  }
+  .author-preview p {
+    font-size: 0.9rem;
+  }
+  .author-preview img {
+    border-radius: 50%;
+  }
+</style>

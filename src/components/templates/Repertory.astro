@@ -4,10 +4,16 @@ import { homePagePostsQuery } from "../../lib/api";
 import PostCard from "../../components/PostCard.astro";
 const data = await homePagePostsQuery();
 const posts = data.posts.nodes;
-const subject = node.pageOption.tags_posts;
-const selectedPost = posts.filter((post) =>
-  post.tags.nodes.some((tag) => tag.name === subject)
-);
+let selectedPost = [];
+if (node.pageOption && node.pageOption.tags_posts) {
+  const subject = node.pageOption.tags_posts;
+  selectedPost = posts.filter(
+    (post) =>
+      post.tags &&
+      post.tags.nodes &&
+      post.tags.nodes.some((tag) => tag.name === subject)
+  );
+}
 ---
 
 <section class="repertory-header">

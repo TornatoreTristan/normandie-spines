@@ -126,6 +126,18 @@ export async function getNodeByURI(uri) {
                         }
                       }
                     }
+                    author {
+                      node {
+                        id
+                        description
+                        avatar {
+                          url
+                        }
+                        name
+                        lastName
+                        nickname
+                      }
+                    }
                   }
                   ... on Page {
                     id
@@ -247,4 +259,66 @@ export async function getAllUris() {
     });
 
   return uris;
+}
+
+export async function getPostsByCategoryNames(categoryNames) {
+  const categoryNamesString = categoryNames.join(", ");
+
+  const response = await fetch(import.meta.env.WORDPRESS_API_URL, {
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `
+        query GetPostsByCategories($names: String) {
+          posts(where: {categoryName: $names}) {
+            nodes {
+              date
+              uri
+              title
+              commentCount
+              excerpt
+              tags {
+                nodes {
+                  name
+                }
+              }
+              categories {
+                nodes {
+                  name
+                  uri
+                }
+              }
+              author {
+                node {
+                  id
+                  description
+                  avatar {
+                    url
+                  }
+                  name
+                }
+              }
+              featuredImage {
+                node {
+                  srcSet
+                  sourceUrl
+                  altText
+                  mediaDetails {
+                    height
+                    width
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        names: categoryNamesString,
+      },
+    }),
+  });
+
+  const data = await response.json();
+  return data;
 }

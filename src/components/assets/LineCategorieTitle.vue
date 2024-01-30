@@ -1,10 +1,12 @@
 <template>
-  <div class="line-category">
-    <h3>
-      {{ title }}
-    </h3>
-    <img src="/right-arrow.svg" width="20" alt="" />
-  </div>
+  <li class="menu__item">
+    <a href="#" data-text="test"
+      ><img class="image-hover" src="/img/1.jpg" width="200" alt="" />{{
+        title
+      }}</a
+    >
+    <img class="arrow" src="/right-arrow.svg" width="30" alt="fleche" />
+  </li>
 </template>
 
 <script setup>
@@ -18,17 +20,14 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.line-category {
-  padding: 0.5rem 1rem;
-  border-top: 1px solid #eaeaea;
+li a:hover {
+  opacity: 1;
+}
+.menu__item {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  justify-content: space-between;
 }
-h3 {
-  font-weight: 100;
-}
-img {
+.arrow {
   transform: rotate(-45deg);
 }
 </style>

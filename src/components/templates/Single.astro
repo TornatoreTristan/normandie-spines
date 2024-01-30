@@ -1,44 +1,130 @@
 ---
+import AuthorPreview from "../AuthorPreview.astro";
+
 const { node } = Astro.props;
+
+import { Breadcrumbs } from "astro-breadcrumbs";
+
+import "astro-breadcrumbs/breadcrumbs.css";
+import AlsoLiked from "../AlsoLiked.astro";
 ---
 
-<h1>{node.title}</h1>
-{
-  node.categories
-    ? node.categories.nodes.map((category) => (
-        <a class="term-link" href={category.uri}>
-          {category.name}
-        </a>
-      ))
-    : null
-}
-<!-- Only show date if node is a Post -->
-{
-  node.__typename === "Post" ? (
-    <p class="post-details">
-      Posted on{" "}
-      <time datetime={node.date}>
-        {new Date(node.date).toLocaleDateString()}
-      </time>
-    </p>
-  ) : null
-}
-<img
-  class="featured-image"
-  src={node.featuredImage?.node?.mediaItemUrl}
-  srcset={node.featuredImage?.node?.srcSet}
-  alt={node.featuredImage?.node?.altText}
-  loading="lazy"
-  width={node.featuredImage?.node?.mediaDetails?.width}
-  height={node.featuredImage?.node?.mediaDetails?.height}
-/>
+<section class="breadcrumbs">
+  <Breadcrumbs title={node.title}>
+    <svg
+      slot="index"
+      aria-label="Home Page"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      ><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z">
+      </path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
 
-<article set:html={node.content} />
+    <svg
+      slot="separator"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      ><polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </Breadcrumbs>
+</section>
+
+<section class="article">
+  <h1>{node.title}</h1>
+
+  {
+    node.categories
+      ? node.categories.nodes.map((category) => (
+          <a class="term-link" href={category.uri}>
+            {category.name}
+          </a>
+        ))
+      : null
+  }
+  <!-- Only show date if node is a Post -->
+  {
+    node.__typename === "Post" ? (
+      <div class="post-details">
+        <div class="post-details__date">
+          Publié le{" "}
+          <time datetime={node.date}>
+            {new Date(node.date).toLocaleDateString("fr-FR")}
+          </time>
+        </div>
+        <div class="post-details__author">
+          Écrit par{" "}
+          <img src={node.author?.node?.avatar?.url} width="40" alt="" />{" "}
+          {node.author?.node?.name}
+        </div>
+      </div>
+    ) : null
+  }
+  <img
+    class="featured-image"
+    src={node.featuredImage?.node?.mediaItemUrl}
+    srcset={node.featuredImage?.node?.srcSet}
+    alt={node.featuredImage?.node?.altText}
+    loading="lazy"
+    width={node.featuredImage?.node?.mediaDetails?.width}
+    height={node.featuredImage?.node?.mediaDetails?.height}
+  />
+
+  <article class="article-content" set:html={node.content} />
+
+  <AuthorPreview author={node.author?.node} />
+</section>
+
+<AlsoLiked category={node.categories} slug={node.uri} />
 
 <style is:global>
+  .breadcrumbs {
+    padding-top: 4rem;
+    padding-bottom: 0;
+    color: #9c9c9c;
+  }
   .wp-block-image img {
     width: 100%;
     height: auto;
+  }
+  .article li {
+    margin-bottom: 1rem;
+  }
+  .article li:last-child {
+    margin-bottom: 0;
+  }
+  .article h2 {
+    font-size: 2.5rem;
+    margin-top: 6rem;
+    border-top: 0.5rem solid #fdd464;
+    padding-top: 0.5rem;
+  }
+  .article h3 {
+    font-size: 2rem;
+    margin-top: 4rem;
+  }
+  .article ul {
+    max-width: 500px;
+    padding: 1rem 3rem 1rem 3rem;
+    line-height: 1.6rem;
+    border-left: 3px solid #fdd464;
+    background-color: #fffff6;
+  }
+  .article-content img {
+    border-radius: 0.75rem;
   }
 </style>
 <style>
@@ -49,16 +135,41 @@ const { node } = Astro.props;
   }
   .post-details {
     color: darkgrey;
-    font-weight: 300;
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 100;
+  }
+  .post-details__date {
+    border-right: 1px solid darkgrey;
+    padding-right: 10px;
+  }
+  .post-details__author {
+    display: flex;
+    align-items: center;
+  }
+  .post-details__author img {
+    border-radius: 50%;
+    margin-left: 10px;
   }
   a.term-link {
     display: inline-block;
     height: 1.5rem;
-    padding: 0.75rem;
+    padding: 0.25rem 0.75rem;
     margin: 0.5rem 0.5rem 0.5rem 0;
-    background: linear-gradient(90deg, #0076dc 0%, #7a1ba6 100%);
-    color: #fff;
     border-radius: 10px;
-    font-weight: bold;
+    color: #000;
+    border: 1px solid #ccc;
+    text-decoration: none;
+  }
+  .article {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .article h1 {
+    font-size: 2.6rem;
+    margin-bottom: 0.5rem;
   }
 </style>
