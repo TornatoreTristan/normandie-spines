@@ -55,10 +55,8 @@ const posts = allPosts.data.posts.nodes.filter(
     display: flex;
     flex-wrap: wrap;
   }
-
   .other-post__item {
-    width: 30%;
-    margin-bottom: 2rem;
+    width: 100%;
     padding: 1rem;
   }
   .other-post__item a {
@@ -91,5 +89,12 @@ const posts = allPosts.data.posts.nodes.filter(
   }
   .post-details__author img {
     border-radius: 50%;
+  }
+  @media screen and (min-width: 768px) {
+    .other-post__item {
+      width: 30%;
+      margin-bottom: 2rem;
+      padding: 1rem;
+    }
   }
 </style>

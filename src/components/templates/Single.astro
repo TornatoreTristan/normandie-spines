@@ -92,9 +92,13 @@ import AlsoLiked from "../AlsoLiked.astro";
 
 <style is:global>
   .breadcrumbs {
-    padding-top: 4rem;
+    padding-top: 2rem;
     padding-bottom: 0;
     color: #9c9c9c;
+  }
+  .breadcrumbs a {
+    font-size: 0.8rem;
+    margin: 0.25rem 0;
   }
   .wp-block-image img {
     width: 100%;
@@ -165,11 +169,27 @@ import AlsoLiked from "../AlsoLiked.astro";
     text-decoration: none;
   }
   .article {
-    max-width: 700px;
-    margin: 0 auto;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
   .article h1 {
     font-size: 2.6rem;
     margin-bottom: 0.5rem;
+  }
+  @media screen and (min-width: 1240px) {
+    .breadcrumbs {
+      padding-top: 4rem;
+    }
+    .breadcrumbs a {
+      font-size: 1rem;
+    }
+    .article {
+      max-width: 700px;
+      margin: 0 auto;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
   }
 </style>

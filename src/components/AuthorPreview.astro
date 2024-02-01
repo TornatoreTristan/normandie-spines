@@ -15,8 +15,7 @@ const props = Astro.props;
 <style>
   .author-preview {
     display: flex;
-    gap: 4rem;
-    align-items: center;
+    flex-direction: column;
     margin-bottom: 2rem;
     padding: 1rem 2rem;
     background-color: #fffff6;
@@ -28,5 +27,12 @@ const props = Astro.props;
   }
   .author-preview img {
     border-radius: 50%;
+  }
+  @media screen and (min-width: 968px) {
+    .author-preview {
+      flex-direction: row;
+      gap: 4rem;
+      align-items: center;
+    }
   }
 </style>

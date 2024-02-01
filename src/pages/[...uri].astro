@@ -9,6 +9,8 @@ const uri = `/${Astro.params.uri}/`;
 const data = await getNodeByURI(uri);
 const node = data.nodeByUri;
 
+console.log(node);
+
 export async function getStaticPaths() {
   return await getAllUris();
 }
@@ -35,7 +37,6 @@ function resolveContentTemplate(node) {
     default:
       template = Single;
   }
-
   return template;
 }
 

@@ -61,4 +61,12 @@ onMounted(() => {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
 }
+@media screen and (max-width: 768px) {
+  .list__image {
+    margin: 3rem 0;
+  }
+  .list__image li a {
+    font-size: 1rem;
+  }
+}
 </style>

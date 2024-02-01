@@ -2,11 +2,46 @@
 import PostCard from "../PostCard.astro";
 
 const { node } = Astro.props;
----     
- <h1>{node.name} - Archive</h1>
+---
 
- {node.posts.nodes.map(post => {
-    return (
-        <PostCard post={post}></PostCard>
-    )
-})}
+<section class="section-archive">
+  <div class="header-section">
+    <h1>Tous nos articles de la catégorie : {node.name}</h1>
+  </div>
+  <div class="list-articles">
+    {
+      node.posts.nodes.map((post) => {
+        return <PostCard post={post} />;
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .list-articles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  .section-archive {
+    padding: 0rem 3%;
+  }
+  @media screen and (min-width: 968px) {
+    h1 {
+      font-size: 3rem;
+      max-width: 750px;
+    }
+    .header-section {
+      margin: 0 auto 5rem 0;
+    }
+    .list-articles {
+      gap: 1rem;
+    }
+    .section-archive {
+      padding: 4rem 14%;
+    }
+  }
+</style>
